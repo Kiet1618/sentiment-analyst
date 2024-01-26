@@ -68,7 +68,7 @@ def scheduled_job(video_id):
     youtube_webhook(video_id)
 
 # Replace 'jfKfPfyJRdk' with the actual video ID you want to use
-video_id = 'K1XD86TXUCQ'
+video_id = 'jfKfPfyJRdk'
 
 # Schedule the job to run every 15 seconds
 schedule.every(15).seconds.do(scheduled_job, video_id)

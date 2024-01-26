@@ -4,7 +4,6 @@ from pyspark.ml import PipelineModel
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, udf
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType
-from decouple import config
 
 # Import necessary libraries for sentiment analysis using Spark MLlib
 from pyspark.ml.feature import Tokenizer
@@ -15,13 +14,13 @@ from pyspark.ml.classification import NaiveBayes
 from pyspark.ml import Pipeline
 
 def write_row_in_mongo(df):
-    mongo_uri = config('MONGOACCESS')
+    mongo_uri = 'mongodb+srv://bigdatapyspark:bigdatapyspark@bigdata.d648sgf.mongodb.net/'
 
     df.write.format("mongo").mode("append").option("uri", mongo_uri).save()
 
 def sentiment_analysis(text):
     # Load the pre-trained model
-    path_to_model = r''  # Path to the pre-trained model
+    path_to_model = r'logistic_regression'  # Path to the pre-trained model
     pipeline_model = PipelineModel.load(path_to_model)
 
     # Create a DataFrame with the text column
@@ -63,8 +62,8 @@ if __name__ == "__main__":
         .builder \
         .master("local[*]") \
         .appName("YouTubeSentimentAnalysis") \
-        .config("spark.mongodb.input.uri", config('MONGOACCESS')) \
-        .config("spark.mongodb.output.uri", config('MONGOACCESS')) \
+        .config("spark.mongodb.input.uri", 'mongodb+srv://bigdatapyspark:bigdatapyspark@bigdata.d648sgf.mongodb.net/') \
+        .config("spark.mongodb.output.uri", 'mongodb+srv://bigdatapyspark:bigdatapyspark@bigdata.d648sgf.mongodb.net/') \
         .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1") \
         .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2") \
         .getOrCreate()
